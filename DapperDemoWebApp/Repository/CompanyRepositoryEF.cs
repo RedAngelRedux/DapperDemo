@@ -1,5 +1,6 @@
 ﻿using DapperDemoWebApp.Data;
 using DapperDemoWebApp.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DapperDemoWebApp.Repository
@@ -44,5 +45,6 @@ namespace DapperDemoWebApp.Repository
             _db.SaveChanges();
             return company;
         }
+
     }
 }
