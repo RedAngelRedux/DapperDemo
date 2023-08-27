@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using DapperDemoWebApp.Models;
 using DapperDemoWebApp.Repository;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
