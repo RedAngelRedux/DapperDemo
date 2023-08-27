@@ -1,7 +1,5 @@
 ﻿using DapperDemoWebApp.Data;
 using DapperDemoWebApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DapperDemoWebApp.Repository
 {
@@ -21,9 +19,9 @@ namespace DapperDemoWebApp.Repository
             return company;
         }
 
-        public Company Find(int id)
+        public Company? Find(int id)
         {
-            return _db.Companies.FirstOrDefault(u => u.CompanyId==id);
+            return _db.Companies.FirstOrDefault(u => u.CompanyId == id);
         }
 
         public List<Company> GetAll()
@@ -33,9 +31,12 @@ namespace DapperDemoWebApp.Repository
 
         public void Remove(int id)
         {
-            Company company = _db.Companies.FirstOrDefault(u => u.CompanyId==id);
-            _db.Companies.Remove(company);
-            _db.SaveChanges();
+            Company? company = _db.Companies.FirstOrDefault(u => u.CompanyId==id);
+            if(company != null)
+            {
+                _db.Companies.Remove(company);
+                _db.SaveChanges();
+            }
             return;
         }
 

@@ -15,23 +15,13 @@ namespace DapperDemoWebApp.Repository
             this.db = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
 
-
         public Company Add(Company company)
         {
             var sql = 
                 "INSERT INTO Companies (Name, Address, City, State, PostalCode) VALUES(@Name, @Address, @City, @State, @PostalCode);"
                 + " SELECT CAST(SCOPE_IDENTITY() as int);";
 
-            //var id = db.Query<int>(sql, new 
-            //{ 
-            //    company.Name, 
-            //    company.Address, 
-            //    company.City, 
-            //    company.State, 
-            //    company.PostalCode 
-            //}).Single();
-
-            // This is the same as the commented out line above which is possible since all the company names are the same as the database names
+            // Further, because of the consisten naming, the above can be further simplified as...
             var id = db.Query<int>(sql,company).Single();
 
 
@@ -41,13 +31,13 @@ namespace DapperDemoWebApp.Repository
 
         public Company Find(int id)
         {
-            var sql = "SELECT * FROM Companies WHERE CompanyId = @CompanyId";
+            var sql = "SELECT [CompanyId], [Name], [Address], [City], [State], [PostalCode] FROM Companies WHERE [CompanyId] = @CompanyId";
             return db.Query<Company>(sql, new { @CompanyId = id }).Single();
         }
 
         public List<Company> GetAll()
         {
-            var sql = "SELECT * FROM Companies";
+            var sql = "SELECT [CompanyId], [Name], [Address], [City], [State], [PostalCode] FROM Companies";
             return db.Query<Company>(sql).ToList();
         }
 

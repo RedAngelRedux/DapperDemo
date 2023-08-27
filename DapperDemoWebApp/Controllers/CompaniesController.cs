@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DapperDemoWebApp.Data;
 using DapperDemoWebApp.Models;
 using DapperDemoWebApp.Repository;
-using NuGet.Common;
-using Microsoft.CodeAnalysis.Operations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DapperDemoWebApp.Controllers
 {
@@ -63,6 +56,18 @@ namespace DapperDemoWebApp.Controllers
                 _companyRepo.Add(company);
                 return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    string errorMessage = string.Empty;
+                    foreach (ModelError error in modelState.Errors)
+                    {
+                        // Get the Error details.
+                        errorMessage += error.ErrorMessage.ToString();
+                    }
+                }
+            }
             return View(company);
         }
 
@@ -98,6 +103,7 @@ namespace DapperDemoWebApp.Controllers
             if (ModelState.IsValid)
             {
                 _companyRepo.Update(company);
+                return RedirectToAction(nameof(Index));
             }
 
             return View(company);
