@@ -1,8 +1,7 @@
 ﻿using DapperDemoWebApp.Models;
 using DapperDemoWebApp.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DapperDemoWebApp.Controllers
 {
@@ -29,6 +28,8 @@ namespace DapperDemoWebApp.Controllers
         // GET:  Employees/Create
         public IActionResult Create()
         {
+            SetCompanySelectList();
+
             return View();
         }
 
@@ -66,6 +67,8 @@ namespace DapperDemoWebApp.Controllers
                 return NotFound();
             }
 
+            SetCompanySelectList();
+
             return View(Employee);
         }
 
@@ -81,7 +84,10 @@ namespace DapperDemoWebApp.Controllers
 
             if(ModelState.IsValid)
             {
-                _employeeRepository.Update(Employee);
+                if (Employee != null )
+                {
+                    _employeeRepository.Update(Employee);
+                }                
                 return RedirectToAction(nameof(Index));
             }
 
@@ -99,6 +105,17 @@ namespace DapperDemoWebApp.Controllers
             _employeeRepository.Remove(id.GetValueOrDefault());
 
             return RedirectToAction(nameof(Index)); 
+        }
+
+        private void SetCompanySelectList()
+        {
+            IEnumerable<SelectListItem> companyList = _companyRepository.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.CompanyId.ToString()
+            });
+
+            ViewBag.CompanyList = companyList;
         }
     }
 }
