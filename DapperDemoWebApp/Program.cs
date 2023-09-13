@@ -12,8 +12,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<ICompanyRepository,CompanyRepository>();
+builder.Services.AddScoped<ICompanyRepository,CompanyRepositoryContrib>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IBonusRepository, BonusRepository >();
 
 
 builder.Services.AddControllersWithViews();

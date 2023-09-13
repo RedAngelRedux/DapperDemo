@@ -29,7 +29,7 @@ namespace DapperDemoWebApp.Repository
             return company;
         }
 
-        public Company Find(int id)
+        public Company? Find(int? id)
         {
             var sql = "SELECT [CompanyId], [Name], [Address], [City], [State], [PostalCode] FROM Companies WHERE [CompanyId] = @CompanyId";
             return db.Query<Company>(sql, new { @CompanyId = id }).Single();

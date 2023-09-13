@@ -1,4 +1,5 @@
-﻿namespace DapperDemoWebApp.Models
+﻿
+namespace DapperDemoWebApp.Models
 {
     public class Employee
     {

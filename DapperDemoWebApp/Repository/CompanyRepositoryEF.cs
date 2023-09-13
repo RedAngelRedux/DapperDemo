@@ -19,7 +19,7 @@ namespace DapperDemoWebApp.Repository
             return company;
         }
 
-        public Company? Find(int id)
+        public Company? Find(int? id)
         {
             return _db.Companies.FirstOrDefault(u => u.CompanyId == id);
         }
