@@ -22,7 +22,7 @@ namespace DapperDemoWebApp.Controllers
         }
 
         // GET:  Employees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int companyId=0)
         {
             // // Original Implementation
             //return View(_employeeRepository.GetAll());
@@ -36,7 +36,7 @@ namespace DapperDemoWebApp.Controllers
             //return View(employees);
 
             // // Advanced Dapper Implementation
-            List<Employee> employees = _bonusRepository.GetEmployeeWithCompany();
+            List<Employee> employees = _bonusRepository.GetEmployeeWithCompany(companyId);
             return View(employees);
         }
 

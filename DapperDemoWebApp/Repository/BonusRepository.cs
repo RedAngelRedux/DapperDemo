@@ -27,5 +27,26 @@ namespace DapperDemoWebApp.Repository
 
             return employee.ToList();
         }
+
+        public List<Employee> GetEmployeeWithCompany(int id = 0)
+        {
+            var sql = "SELECT e.[EmployeeId], e.[Name], e.[Email], e.[Phone], " +
+                "e.[Title], e.[CompanyId], c.[CompanyId], c.[Name], c.[Address], " +
+                "c.[City], c.[State], c.[PostalCode] FROM [Employees] AS e " +
+                "INNER JOIN [Companies] AS c ON e.[CompanyId] = c.[CompanyId]";
+
+            if(id != 0)
+            {
+                sql += " WHERE e.CompanyId = @Id ";
+            }
+
+            var employee = _db.Query<Employee, Company, Employee>(sql, (e, c) => {
+                e.Company = c;
+                return e;
+            },new { id=id }, splitOn: "CompanyId");
+
+            return employee.ToList();
+        }
+
     }
 }
