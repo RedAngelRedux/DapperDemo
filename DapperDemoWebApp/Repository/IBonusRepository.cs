@@ -7,5 +7,7 @@ namespace DapperDemoWebApp.Repository
     {
         public List<Employee> GetEmployeeWithCompany();
         public List<Employee> GetEmployeeWithCompany(int id);
+        public Company GetCompanyWithEmployees(int CompanyId);
+
     }
 }
