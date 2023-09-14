@@ -9,25 +9,34 @@ namespace DapperDemoWebApp.Controllers
     {
         private readonly ICompanyRepository _companyRepository;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IBonusRepository _bonusRepository;
 
         [BindProperty]
         public Employee? Employee { get; set; }
 
-        public EmployeesController(ICompanyRepository companyRepository, IEmployeeRepository employeeRepository)
+        public EmployeesController(ICompanyRepository companyRepository, IEmployeeRepository employeeRepository, IBonusRepository bonusRepository)
         {
             _companyRepository = companyRepository;
             _employeeRepository = employeeRepository;
+            _bonusRepository = bonusRepository;
         }
 
         // GET:  Employees
         public async Task<IActionResult> Index()
-        {            
+        {
+            // // Original Implementation
             //return View(_employeeRepository.GetAll());
-            List<Employee> employees = _employeeRepository.GetAll();
-            foreach(Employee obj in employees)
-            {
-                obj.Company = _companyRepository.Find(obj.CompanyId);
-            }
+
+            // // N + 1 Implementation
+            //List<Employee> employees = _employeeRepository.GetAll();
+            //foreach(Employee obj in employees)
+            //{
+            //    obj.Company = _companyRepository.Find(obj.CompanyId);
+            //}
+            //return View(employees);
+
+            // // Advanced Dapper Implementation
+            List<Employee> employees = _bonusRepository.GetEmployeeWithCompany();
             return View(employees);
         }
 
