@@ -1,13 +1,27 @@
 ﻿using DapperDemoWebApp.Models;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.ComponentModel;
 
 namespace DapperDemoWebApp.Repository
 {
+    public enum SEARCH_TYPE
+    {
+        [Description("BEGINS WITH")]
+        BEGINS_WITH = 1,
+        [Description("ENDS WITH")]
+        ENDS_WITH = 2,
+        [Description("CONTAINS")]
+        CONTAINS = 3
+    };
+
     public interface IBonusRepository
     {
-        public List<Employee> GetEmployeeWithCompany();
-        public List<Employee> GetEmployeeWithCompany(int id);
-        public Company GetCompanyWithEmployees(int CompanyId);
-
+        List<Employee> GetEmployeeWithCompany();
+        List<Employee> GetEmployeeWithCompany(int id);
+        Company GetCompanyWithEmployees(int CompanyId);
+        List<Company> GetAllCompaniesWithEmployees();
+        void RemoveRangeOfCompaniesWithEmployees(int[] companyId);
+        List<Company> FilterCompaniesByName(string name, SEARCH_TYPE searchType);
+        void AddTestCompanyWithEmployees(Company company);
+        void RemoveTestCompaniesWithEmployees();
     }
 }
