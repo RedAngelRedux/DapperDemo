@@ -24,16 +24,31 @@ namespace DapperDemoWebApp.Repository
             var companyId = _db.Query<int>(sqlCompany, company).Single();
             company.CompanyId = companyId;
 
-            foreach(var employee in company.Employees)
-            {
-                employee.CompanyId = company.CompanyId;
-                var sqlEmployee =
-                    "INSERT INTO [Employees] ([Name], [Title], [Email], [Phone], [CompanyId]) VALUES(@Name, @Title, @Email, @Phone, @CompanyId);"
-                    + " SELECT CAST(SCOPE_IDENTITY() as int);";
+            //// This foreach loop is replaced by the "bulk insert" code below
+            //foreach(var employee in company.Employees)
+            //{
+            //    employee.CompanyId = company.CompanyId;
+            //    var sqlEmployee =
+            //        "INSERT INTO [Employees] ([Name], [Title], [Email], [Phone], [CompanyId]) VALUES(@Name, @Title, @Email, @Phone, @CompanyId);"
+            //        + " SELECT CAST(SCOPE_IDENTITY() as int);";
 
-                // Further, because of the consisten naming, the above can be further simplified as...
-                _db.Query<int>(sqlEmployee, employee).Single();    
-            }
+            //    // Further, because of the consisten naming, the above can be further simplified as...
+            //    _db.Query<int>(sqlEmployee, employee).Single();    
+            //}
+
+            // Alternative to the foreach loop above
+
+            // // First, set the companyId for all Employees in the Company object
+            company.Employees.Select(c => { c.CompanyId = companyId; return c; }).ToList();
+            // // Next, queue up the sql statement for inserting a single employee
+            var sqlEmployee =
+                "INSERT INTO [Employees] ([Name], [Title], [Email], [Phone], [CompanyId]) VALUES(@Name, @Title, @Email, @Phone, @CompanyId);"
+                + " SELECT CAST(SCOPE_IDENTITY() as int);";
+            // // Finally, call the Dapper method, which is smart enough to realize
+            // // it has been given a List<Employee> and will therefore execute
+            // // the sql for each one
+            _db.Execute(sqlEmployee, company.Employees);
+
         }
 
         public List<Company> FilterCompaniesByName(string snippet,SEARCH_TYPE searchType)

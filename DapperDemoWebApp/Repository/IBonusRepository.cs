@@ -19,8 +19,8 @@ namespace DapperDemoWebApp.Repository
         List<Employee> GetEmployeeWithCompany(int id);
         Company GetCompanyWithEmployees(int CompanyId);
         List<Company> GetAllCompaniesWithEmployees();
-        void RemoveRangeOfCompaniesWithEmployees(int[] companyId);
         List<Company> FilterCompaniesByName(string name, SEARCH_TYPE searchType);
+        void RemoveRangeOfCompaniesWithEmployees(int[] companyId);
         void AddTestCompanyWithEmployees(Company company);
         void RemoveTestCompaniesWithEmployees();
     }
